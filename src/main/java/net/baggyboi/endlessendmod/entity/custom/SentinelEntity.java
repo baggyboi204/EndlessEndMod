@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -312,7 +313,8 @@ public class SentinelEntity extends FlyingMob implements Enemy {
                     Level $$2 = this.sentinel.level();
                     ++this.chargeTime;
                     if (this.chargeTime == 10 && !this.sentinel.isSilent()) {
-                        $$2.levelEvent((Player)null, 1015, this.sentinel.blockPosition(), 0);
+                        // Add the event trigger to play BEACON_POWER_SELECT sound
+                        this.sentinel.playSound(SoundEvents.BEACON_POWER_SELECT, 1.0F, 1.0F);
                     }
 
                     if (this.chargeTime == 20) {
@@ -322,7 +324,8 @@ public class SentinelEntity extends FlyingMob implements Enemy {
                         double $$6 = $$0.getY(0.5) - (0.5 + this.sentinel.getY(0.5));
                         double $$7 = $$0.getZ() - (this.sentinel.getZ() + $$4.z);
                         if (!this.sentinel.isSilent()) {
-                            $$2.levelEvent((Player)null, 1016, this.sentinel.blockPosition(), 0);
+                            // Add the event trigger to play BEACON_POWER_SELECT sound
+                            this.sentinel.playSound(SoundEvents.BEACON_POWER_SELECT, 1.0F, 1.0F);
                         }
 
                         LargeFireball $$8 = new LargeFireball($$2, this.sentinel, $$5, $$6, $$7, this.sentinel.getExplosionPower());
