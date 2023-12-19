@@ -122,6 +122,7 @@ public class SentinelModel<T extends Entity> extends HierarchicalModel<T> {
 
         this.animateWalk(ModAnimationDefinitions.SENTINEL_WALK,limbSwing,limbSwingAmount,2f,2.5f);
         this.animate(((SentinelEntity) entity).idleAnimationState,ModAnimationDefinitions.SENTINEL_IDLE,ageInTicks,1f);
+
     }
 
     @Override

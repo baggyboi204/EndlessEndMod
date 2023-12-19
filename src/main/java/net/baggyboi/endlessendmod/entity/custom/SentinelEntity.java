@@ -30,9 +30,7 @@ import java.util.EnumSet;
 public class SentinelEntity extends FlyingMob implements Enemy {
 
     private float allowedHeightOffset = 0.5F;
-
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING;
-
     private int explosionPower = 1;
     private int nextHeightOffsetChangeTick;
 
@@ -41,15 +39,14 @@ public class SentinelEntity extends FlyingMob implements Enemy {
 
     public SentinelEntity(EntityType<? extends SentinelEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.xpReward = 10;
+        this.xpReward = 5;
         this.moveControl = new SentinelMoveControl(this);
     }
 
+    //ANIMATIONS START
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
 
-    public final AnimationState attackAnimationState = new AnimationState();
-    private int attackAnimationTimeout = 0;
 
     @Override
     public void tick() {
@@ -67,8 +64,6 @@ public class SentinelEntity extends FlyingMob implements Enemy {
         } else {
             --this.idleAnimationTimeout;
         }
-
-
     }
 
     @Override
@@ -83,19 +78,16 @@ public class SentinelEntity extends FlyingMob implements Enemy {
         this.walkAnimation.update(f, 0.2f);
     }
 
-
-
-
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new RandomFloatAroundGoal(this));
         this.goalSelector.addGoal(7, new SentinelLookGoal(this));
         this.goalSelector.addGoal(7, new SentinelShootFireballGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, true));
 
     }
+    //GOALS END
 
     static class SentinelLookGoal extends Goal {
         private final SentinelEntity sentinel;
@@ -104,6 +96,7 @@ public class SentinelEntity extends FlyingMob implements Enemy {
             this.sentinel = pSentinel;
             this.setFlags(EnumSet.of(Flag.LOOK));
         }
+
 
         public boolean canUse() {
             return true;
@@ -135,29 +128,30 @@ public class SentinelEntity extends FlyingMob implements Enemy {
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 20D)
-                .add(Attributes.FOLLOW_RANGE, 48D)
+                .add(Attributes.FOLLOW_RANGE, 100.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5f)
                 .add(Attributes.ATTACK_DAMAGE, 2f);
+
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENDERMITE_AMBIENT;
+        return SoundEvents.BEACON_AMBIENT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.RAVAGER_HURT;
+        return SoundEvents.BEACON_ACTIVATE;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.DOLPHIN_DEATH;
+        return SoundEvents.BEACON_DEACTIVATE;
     }
 
     @Override
@@ -285,6 +279,7 @@ public class SentinelEntity extends FlyingMob implements Enemy {
         this.entityData.define(DATA_IS_CHARGING, false);
     }
 
+
     private static class SentinelShootFireballGoal extends Goal {
         private final SentinelEntity sentinel;
         public int chargeTime;
@@ -342,6 +337,7 @@ public class SentinelEntity extends FlyingMob implements Enemy {
                 this.sentinel.setCharging(this.chargeTime > 10);
             }
         }
+
     }
 
 }
