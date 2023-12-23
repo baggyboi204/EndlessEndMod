@@ -1,15 +1,18 @@
 package net.baggyboi.endlessendmod.entity.custom;
 
+import net.baggyboi.endlessendmod.config.EEConfig;
+import net.baggyboi.endlessendmod.entity.util.EEEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -23,14 +26,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.MobSpawnType;
+import net.baggyboi.endlessendmod.misc.EETagRegistry;
 
 
 import java.util.EnumSet;
@@ -96,7 +99,25 @@ public class SentinelEntity extends FlyingMob implements Enemy {
 
     }
     //GOALS END
+//ALEX MOBS CODE STARTS
+    public static boolean canSentinelSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
+        final boolean spawnBlock = worldIn.getBlockState(pos.below()).is(EETagRegistry.SENTINEL_SPAWNS);
+        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
+    }
 
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return EEEntityRegistry.rollSpawn(EEConfig.sentinelSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        return worldIn.isUnobstructed(this);
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+    //ALEX MOBS CODE END
 
     static class SentinelLookGoal extends Goal {
         private final SentinelEntity sentinel;
@@ -153,6 +174,8 @@ public class SentinelEntity extends FlyingMob implements Enemy {
                 .add(Attributes.ATTACK_DAMAGE, 2f);
 
     }
+
+
 
     @Nullable
     @Override
@@ -359,5 +382,6 @@ public class SentinelEntity extends FlyingMob implements Enemy {
         }
 
     }
+
 
 }
