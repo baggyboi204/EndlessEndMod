@@ -132,7 +132,7 @@ mixin {
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
-                "Specification-Title": "baggyboi",
+                "Specification-Title": "endlessendmod",
                 "Specification-Vendor": "baggyboi204",
                 "Specification-Version": "1.17.0", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
