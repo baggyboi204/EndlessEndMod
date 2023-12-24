@@ -1,8 +1,7 @@
 package net.baggyboi.endlessendmod.entity.custom;
 
-import net.baggyboi.endlessendmod.config.EEConfig;
-import net.baggyboi.endlessendmod.entity.util.EEEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,7 +32,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.MobSpawnType;
-import net.baggyboi.endlessendmod.misc.EETagRegistry;
+import net.minecraft.core.particles.ParticleTypes;
+
+
 
 
 import java.util.EnumSet;
@@ -65,6 +66,9 @@ public class SentinelEntity extends FlyingMob implements Enemy {
 
         if (this.level().isClientSide()) {
             setupAnimationStates();
+            for(int i = 0; i < 2; ++i) {
+                this.level().addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5), this.getRandomY() - 0.25, this.getRandomZ(0.5), (this.random.nextDouble() - 0.5) * 2.0, -this.random.nextDouble(), (this.random.nextDouble() - 0.5) * 2.0);
+            }
         }
     }
 
@@ -99,15 +103,11 @@ public class SentinelEntity extends FlyingMob implements Enemy {
 
     }
     //GOALS END
-//ALEX MOBS CODE STARTS
-    public static boolean canSentinelSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
-        final boolean spawnBlock = worldIn.getBlockState(pos.below()).is(EETagRegistry.SENTINEL_SPAWNS);
-        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
-    }
 
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return EEEntityRegistry.rollSpawn(EEConfig.sentinelSpawnRolls, this.getRandom(), spawnReasonIn);
-    }
+
+
+
+
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
         return worldIn.isUnobstructed(this);

@@ -3,7 +3,6 @@ package net.baggyboi.endlessendmod;
 import com.mojang.logging.LogUtils;
 import net.baggyboi.endlessendmod.entity.ModEntities;
 import net.baggyboi.endlessendmod.entity.client.SentinelRenderer;
-import net.baggyboi.endlessendmod.entity.util.EEEntityRegistry;
 import net.baggyboi.endlessendmod.item.ModCreativeModTabs;
 import net.baggyboi.endlessendmod.item.ModItems;
 import net.baggyboi.endlessendmod.loot.ModLootModifiers;
@@ -32,7 +31,6 @@ public class EndlessEndMod {
 
         ModCreativeModTabs.register(modEventBus);
 
-        EEEntityRegistry.DEF_REG.register(modEventBus);
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModLootModifiers.register(modEventBus);
