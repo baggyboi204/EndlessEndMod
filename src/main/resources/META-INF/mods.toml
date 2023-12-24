@@ -2,12 +2,13 @@ modLoader="javafml" #mandatory
 loaderVersion="[46,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="GNU LESSER GENERAL PUBLIC LICENSE"
 [[mods]] #mandatory
-modId="baggyboi204" #mandatory
+modId="endlessendmod" #mandatory
 version="1.22.7" #mandatory
 displayName="Endless End Mod" #mandatory
-authors="Baggyboi204" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/endlessendmod" #optional
+authors="Baggyboi203" #optional
 description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
-[[dependencies.baggyboi204]] #optional
+[[dependencies.endlessendmod]] #optional
 # the modid of the dependency
 modId="citadel" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
@@ -18,9 +19,7 @@ versionRange="[2.4.4,)" #mandatory
 ordering="AFTER"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
-[modproperties.baggyboi204]
-catalogueItemIcon="baggyboi204:bear_dust"
-[[dependencies.baggyboi204]]
+[[dependencies.endlessendmod]]
 modId="forge"
 mandatory=true
 versionRange="[47.1.0,)"
